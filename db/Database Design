@@ -1,0 +1,115 @@
+-- creating tables
+
+CREATE TABLE Users
+(
+    id INT PRIMARY KEY IDENTITY(1,1),
+    username VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE()
+);
+
+
+CREATE TABLE Products
+(
+    id INT PRIMARY KEY IDENTITY(1,1),
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    created_at DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Orders
+(
+    id INT PRIMARY KEY IDENTITY(1,1),
+    user_id INT NOT NULL,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE OrderItems
+(
+    id INT PRIMARY KEY IDENTITY(1,1),
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES Orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
+);
+
+
+-- loading data into my tables
+INSERT INTO Users
+    (username, email, password)
+VALUES
+    ('JohnDoe', 'john.doe@example.com', 'password1'),
+    ('JaneSmith', 'jane.smith@example.com', 'password2'),
+    ('MikeJohnson', 'mike.johnson@example.com', 'password3'),
+    ('SarahWilliams', 'sarah.williams@example.com', 'password4'),
+    ('DavidBrown', 'david.brown@example.com', 'password5');
+
+INSERT INTO Products
+    (name, description, price, quantity)
+VALUES
+    ('Product 1', 'Description 1', 10.99, 100),
+    ('Product 2', 'Description 2', 19.99, 50),
+    ('Product 3', 'Description 3', 5.99, 200),
+    ('Product 4', 'Description 4', 7.99, 150),
+    ('Product 5', 'Description 5', 12.99, 75);
+
+INSERT INTO Orders
+    (user_id, total_amount, status)
+VALUES
+    (1, 50.99, 'completed'),
+    (2, 75.99, 'pending'),
+    (3, 30.99, 'completed'),
+    (4, 20.99, 'cancelled'),
+    (5, 40.99, 'completed');
+
+INSERT INTO OrderItems
+    (order_id, product_id, quantity, price)
+VALUES
+    (1, 1, 2, 10.99),
+    (1, 5, 3, 15.99),
+    (2, 6, 1, 5.99);
+
+
+-- Queries
+
+/*Retrieve a specific user by their ID*/
+SELECT *
+FROM Users
+WHERE id = 3
+;
+
+/*Retrieve a specific product by its ID*/
+SELECT *
+FROM Products
+WHERE id = 3;
+
+/*Retrieve all order items for a specific order*/
+SELECT oi.*, p.name, p.price
+FROM OrderItems oi
+    JOIN Products p ON oi.product_id = p.id
+WHERE oi.order_id = 2;
+
+/*Retrieve the total number of orders*/
+SELECT COUNT(*) AS total_orders
+FROM Orders;
+
+/*Retrieve the total revenue generated from completed orders*/
+SELECT SUM(total_amount) AS total_revenue
+FROM Orders
+WHERE status = 'completed';
+
+select *
+from Orders
+/*Update the status of an order*/
+UPDATE Orders SET status = 'pending' WHERE id = 2;
+
+/*Delete a user and cascade delete associated orders and order items*/
+DELETE FROM Users WHERE id = 5;

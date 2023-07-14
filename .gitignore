@@ -1,0 +1,7 @@
+#environmental variables
+*.env
+*.log
+env
+/node-modules
+/coverage
+npm-debug.log*

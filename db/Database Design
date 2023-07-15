@@ -1,3 +1,4 @@
+
 -- creating tables
 
 CREATE TABLE Users
@@ -41,6 +42,16 @@ CREATE TABLE OrderItems
     FOREIGN KEY (product_id) REFERENCES Products(id) ON DELETE CASCADE
 );
 
+CREATE TABLE Admin
+(
+    id INT PRIMARY KEY IDENTITY(1, 1),
+    admin_name VARCHAR(255) NOT NULL,
+    phone_no VARCHAR(20) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+);
+
+
 
 -- loading data into my tables
 INSERT INTO Users
@@ -77,6 +88,14 @@ VALUES
     (1, 5, 3, 15.99),
     (2, 6, 1, 5.99);
 
+INSERT INTO Admin
+    (admin_name, phone_no, email, password)
+VALUES
+    ('John Doe', '+25474575368', 'john@example.com', 'password1'),
+    ('Jane Smith', '9876543210', 'jane@example.com', 'password2'),
+    ('Mike Johnson', '5555555555', 'mike@example.com', 'password3'),
+    ('Sarah Adams', '9999999999', 'sarah@example.com', 'password4'),
+    ('Robert Brown', '1111111111', 'robert@example.com', 'password5');
 
 -- Queries
 
@@ -113,3 +132,19 @@ UPDATE Orders SET status = 'pending' WHERE id = 2;
 
 /*Delete a user and cascade delete associated orders and order items*/
 DELETE FROM Users WHERE id = 5;
+
+
+-- GRAPH
+
+-- calculate the total amount for a specific order item based on its ID
+SELECT SUM(quantity) * SUM(price) AS total_amount
+FROM OrderItems
+WHERE id = 5;
+
+-- retrieves the total amount of each order made on different order dates.
+-- SELECT order_date, SUM(quantity * unit_price) AS total_amount
+-- FROM Orders
+--     INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
+-- GROUP BY order_date
+
+

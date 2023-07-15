@@ -3,15 +3,16 @@ import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } 
 import { createOrder, deleteOrder, getOrder, getOrders, updateOrder } from "../controllers/orderController.js";
 import { createOrderItem, deleteOrderItem, getOrderItem, getOrderItems, updateOrderItem } from "../controllers/orderItemsController.js";
 import { register, login, loginRequired } from "../controllers/userController.js";
+import { admin_register, admin_login, LoginRequired } from "../controllers/adminController.js";
 
 const routes = (app) => {
     app.route('/products')
-    .get(loginRequired, getProducts)
-    .post(loginRequired, createProduct);
+    .get(LoginRequired, getProducts)
+    .post(LoginRequired, createProduct);
     app.route('/products/:id')
-    .get(loginRequired, getProduct)
-    .delete(loginRequired, deleteProduct)
-    .put(loginRequired, updateProduct);
+    .get(LoginRequired, getProduct)
+    .delete(LoginRequired, deleteProduct)
+    .put(LoginRequired, updateProduct);
 
     app.route('/orders')
     .get(loginRequired, getOrders)
@@ -22,12 +23,12 @@ const routes = (app) => {
     .put(loginRequired, updateOrder);
 
     app.route('/order')
-    .get(loginRequired, getOrderItems)
-    .post(loginRequired, createOrderItem);
+    .get(getOrderItems)
+    .post(createOrderItem);
     app.route('/order/:id')
-    .get(loginRequired, getOrderItem)
-    .delete(loginRequired, deleteOrderItem)
-    .put(loginRequired, updateOrderItem);
+    .get(getOrderItem)
+    .delete(deleteOrderItem)
+    .put(updateOrderItem);
 
     //auth routes
     app.route('/auth/register')
@@ -35,6 +36,14 @@ const routes = (app) => {
 
     app.route('/auth/login')
     .post(login)
+
+    app.route('/auth/adminRegister')
+    .post(admin_register)
+
+    app.route('/auth/adminLogin')
+    .post(admin_login)
+
+
 }
 
 

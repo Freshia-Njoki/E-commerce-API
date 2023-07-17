@@ -51,6 +51,15 @@ CREATE TABLE Admin
     password VARCHAR(255) NOT NULL,
 );
 
+CREATE TABLE Shipping
+(
+    id INT PRIMARY KEY,
+    shippingRate DECIMAL(10, 2) NOT NULL,
+    shippingMethod VARCHAR(255) NOT NULL,
+    deliveryTimeframe VARCHAR(255) NOT NULL,
+    regionRule VARCHAR(255) NOT NULL,
+    orderSize VARCHAR(255) NOT NULL
+);
 
 
 -- loading data into my tables
@@ -97,6 +106,16 @@ VALUES
     ('Sarah Adams', '9999999999', 'sarah@example.com', 'password4'),
     ('Robert Brown', '1111111111', 'robert@example.com', 'password5');
 
+INSERT INTO Shipping
+    (id, shippingRate, shippingMethod, deliveryTimeframe, regionRule, orderSize)
+VALUES
+    (1, 5.99, 'Standard Shipping', '3-5 business days', 'Domestic', 'Small'),
+    (2, 9.99, 'Express Shipping', '1-2 business days', 'Domestic', 'Small'),
+    (3, 14.99, 'International Shipping', '7-14 business days', 'International', 'Small'),
+    (4, 8.99, 'Standard Shipping', '3-5 business days', 'Domestic', 'Large'),
+    (5, 12.99, 'Express Shipping', '1-2 business days', 'Domestic', 'Large'),
+    (6, 19.99, 'International Shipping', '7-14 business days', 'International', 'Large');
+
 -- Queries
 
 /*Retrieve a specific user by their ID*/
@@ -120,13 +139,11 @@ WHERE oi.order_id = 2;
 SELECT COUNT(*) AS total_orders
 FROM Orders;
 
-/*Retrieve the total revenue generated from completed orders*/
-SELECT SUM(total_amount) AS total_revenue
-FROM Orders
-WHERE status = 'completed';
+-- calculate the total amount for a specific order item based on its ID
+SELECT SUM(quantity) * SUM(price) AS total_amount
+FROM OrderItems
+WHERE id = 5;
 
-select *
-from Orders
 /*Update the status of an order*/
 UPDATE Orders SET status = 'pending' WHERE id = 2;
 
@@ -136,15 +153,23 @@ DELETE FROM Users WHERE id = 5;
 
 -- GRAPH
 
--- calculate the total amount for a specific order item based on its ID
-SELECT SUM(quantity) * SUM(price) AS total_amount
-FROM OrderItems
-WHERE id = 5;
+/*Retrieve the total revenue generated from completed orders*/
+SELECT SUM(total_amount) AS total_revenue
+FROM Orders
+WHERE status = 'completed';
+
+
+--total savings
+SELECT SUM(p.price * p.quantity) - SUM(o.total_amount) AS total_savings
+FROM Products p
+    LEFT JOIN Orders o ON p.id = o.id
+WHERE o.status = 'completed';
+
 
 -- retrieves the total amount of each order made on different order dates.
--- SELECT order_date, SUM(quantity * unit_price) AS total_amount
--- FROM Orders
---     INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
--- GROUP BY order_date
+SELECT order_date, SUM(quantity * unit_price) AS total_amount
+FROM Orders
+    INNER JOIN Order_Items ON Orders.order_id = Order_Items.order_id
+GROUP BY order_date
 
 

@@ -19,6 +19,7 @@ export const getProducts = async (req, res) => {
 
 //create a product--"optimize" check if product exists then create one
 export const createProduct = async (req, res) => {
+    console.log(req.body)
    try {
     const {name, description, price, quantity} =req.body;
     let pool = await sql.connect(config.sql);
@@ -27,6 +28,11 @@ export const createProduct = async (req, res) => {
     .input('description', sql.VarChar, description)
     .input('price', sql.Float, price)
     .input('quantity', sql.Int, quantity)
+
+    //add an image 
+    // console.log(req.file)
+    // console.log(name,description,price , quantity)
+    
     .query('INSERT INTO Products (name, description, price, quantity) VALUES (@name, @description, @price, @quantity)' );
     res.status(200).json({ message: 'product created successfully'})
     

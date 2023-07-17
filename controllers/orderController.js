@@ -1,6 +1,54 @@
 import sql from 'mssql';
 import config from '../db/config.js';
 
+//revenue graph
+export const revenue = async (req, res) => {
+    try {
+      let pool = await sql.connect(config.sql);
+      const query = `
+      SELECT SUM(total_amount) AS total_revenue
+      FROM Orders
+      WHERE status = 'completed';
+      
+      `;
+      const result = await pool.request().query(query);
+      if (!result.recordset[0]) {
+        res.status(404).json({ message: 'Error while fetching the record set' });
+      } else {
+        res.status(200).json({ data: result.recordset });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred while retrieving the revenue made' });
+    } finally {
+      sql.close();
+    }
+  };
+
+  //total savings graph
+  export const savings = async (req, res) => {
+    try {
+      let pool = await sql.connect(config.sql);
+      const query = `
+      SELECT SUM(p.price * p.quantity) - SUM(o.total_amount) AS total_savings
+FROM Products p
+LEFT JOIN Orders o ON p.id = o.id
+WHERE o.status = 'completed';
+      
+      `;
+      const result = await pool.request().query(query);
+      if (!result.recordset[0]) {
+        res.status(404).json({ message: 'Error while fetching the record set' });
+      } else {
+        res.status(200).json({ data: result.recordset });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'An error occurred while retrieving the savings made' });
+    } finally {
+      sql.close();
+    }
+  };
 //Get all orders
 export const getOrders = async (req, res) => {
     try {

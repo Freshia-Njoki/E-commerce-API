@@ -1,14 +1,17 @@
 //re-routes the response
 import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from "../controllers/productController.js";
-import { createOrder, deleteOrder, getOrder, getOrders, updateOrder } from "../controllers/orderController.js";
+import { createOrder, deleteOrder, getOrder, getOrders, updateOrder, revenue, savings } from "../controllers/orderController.js";
 import { createOrderItem, deleteOrderItem, getOrderItem, getOrderItems, updateOrderItem } from "../controllers/orderItemsController.js";
 import { register, login, loginRequired } from "../controllers/userController.js";
 import { admin_register, admin_login, LoginRequired } from "../controllers/adminController.js";
+import { shipping } from "../controllers/shippingController.js";
+import multer from 'multer'
 
+const upload = multer({ dest: '../uploads/' })
 const routes = (app) => {
     app.route('/products')
     .get(LoginRequired, getProducts)
-    .post(LoginRequired, createProduct);
+    .post(upload.single('image') ,createProduct);
     app.route('/products/:id')
     .get(LoginRequired, getProduct)
     .delete(LoginRequired, deleteProduct)
@@ -16,8 +19,10 @@ const routes = (app) => {
 
     app.route('/orders')
     .get(loginRequired, getOrders)
-    .post(loginRequired, createOrder);
+    .post(loginRequired, createOrder)
+
     app.route('/orders/:id')
+    
     .get(loginRequired, getOrder)
     .delete(loginRequired, deleteOrder)
     .put(loginRequired, updateOrder);
@@ -42,6 +47,10 @@ const routes = (app) => {
 
     app.route('/auth/adminLogin')
     .post(admin_login)
+
+    app.get('/revenue', revenue);
+    app.get('/savings', savings);
+    app.get('/shipping', shipping);
 
 
 }

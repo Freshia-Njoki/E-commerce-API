@@ -8,6 +8,7 @@ export const getProducts = async (req, res) => {
     try {
         let pool = await sql.connect(config.sql);
         const result = await pool.request().query("SELECT * FROM Products");
+        
         res.status(200).json(result.recordset)
     } catch (error) {
         res.status(400).json({error: 'an error occurred when retrieving products'});
@@ -19,30 +20,41 @@ export const getProducts = async (req, res) => {
 
 //create a product--"optimize" check if product exists then create one
 export const createProduct = async (req, res) => {
-    console.log(req.body)
-   try {
-    const {name, description, price, quantity} =req.body;
-    let pool = await sql.connect(config.sql);
-    let insertProduct = await pool.request()
-    .input('name', sql.VarChar, name)
-    .input('description', sql.VarChar, description)
-    .input('price', sql.Float, price)
-    .input('quantity', sql.Int, quantity)
+    try {
+      const { name, description, price, quantity } = req.body;
+     
+      const imagePath = `/public/uploads/${req.file.filename}`;
+  
+      let pool = await sql.connect(config.sql);
+      let insertProduct = await pool
+        .request()
+        .input('name', sql.VarChar, name)
+        .input('description', sql.VarChar, description)
+        .input('price', sql.Float, price)
+        .input('quantity', sql.Int, quantity)
+        .input('imagePath', sql.VarChar, imagePath)
+        .query(
+          'INSERT INTO Products (name, description, price, quantity, image_path) VALUES (@name, @description, @price, @quantity, @imagePath)'
+        );
+        
+  
+  
 
-    //add an image 
-    // console.log(req.file)
-    // console.log(name,description,price , quantity)
+  // Send the image URL along with other product data as a response
+  res.json({
+    message: 'Product successfully created',
     
-    .query('INSERT INTO Products (name, description, price, quantity) VALUES (@name, @description, @price, @quantity)' );
-    res.status(200).json({ message: 'product created successfully'})
-    
-   } catch (error) {
-    res.status(500).json({error: 'an error occurred when creating a product'});
-    
-   } finally {
-    sql.close();
-   }
-}
+  });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: 'An error occurred when creating a product' });
+        console.log(error)
+        
+    } finally {
+      sql.close();
+    }
+  };
 
 //get a product
 export const getProduct = async (req, res) => {
@@ -52,6 +64,7 @@ export const getProduct = async (req, res) => {
          const result= await pool.request()
          .input('id', sql.VarChar, id)
          .query('SELECT * FROM Products WHERE id = @id');
+         
          res.status(200).json(result.recordset[0]);//to get a single item outside an array
     } catch (error) {
         res.status(400).json({ error: "an error occurred while retrieving a product"})

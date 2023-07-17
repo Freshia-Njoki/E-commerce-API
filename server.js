@@ -3,13 +3,20 @@ import config from './db/config.js';
 import routes from './routes/route.js';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import path from 'path'
+import { fileURLToPath } from 'url';
 
+// Get the directory path of the current module
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 const app = express();
 //middleware - executed before routes
 app.use(express.json());//middleware for accepting data from the frontend
 app.use(express.urlencoded({ extended: true}));
 app.use(cors());
+app.use('/public',express.static('public'))
 
 //jwt middleware for loginRequired(user)
 app.use((req, res, next) => {

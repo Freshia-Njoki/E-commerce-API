@@ -1,5 +1,5 @@
 //re-routes the response
-import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from "../controllers/productController.js";
+import { createProduct, deleteProduct, getProduct, getProducts, updateProduct, getPaymentIntent } from "../controllers/productController.js";
 import { createOrder, deleteOrder, getOrder, getOrders, updateOrder, revenue, savings } from "../controllers/orderController.js";
 import { createOrderItem, deleteOrderItem, getOrderItem, getOrderItems, updateOrderItem } from "../controllers/orderItemsController.js";
 import { register, login, loginRequired } from "../controllers/userController.js";
@@ -51,6 +51,8 @@ const routes = (app) => {
     .get(LoginRequired, getProduct)
     .delete(LoginRequired, deleteProduct)
     .put(LoginRequired, updateProduct);
+
+  
 
     app.route('/orders')
     .get(loginRequired, getOrders)

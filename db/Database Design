@@ -48,7 +48,6 @@ CREATE TABLE Shipping
     shippingRate DECIMAL(10, 2) NOT NULL,
     shippingMethod VARCHAR(255) NOT NULL,
     deliveryTimeframe VARCHAR(255) NOT NULL,
-    regionRule VARCHAR(255) NOT NULL,
     orderSize VARCHAR(255) NOT NULL
 );
 
@@ -98,14 +97,14 @@ VALUES
     ('Robert Brown', '1111111111', 'robert@example.com', 'password5');
 
 INSERT INTO Shipping
-    (id, shippingRate, shippingMethod, deliveryTimeframe, regionRule, orderSize)
+    (id, shippingRate, shippingMethod, deliveryTimeframe, orderSize)
 VALUES
-    (1, 5.99, 'Standard Shipping', '3-5 business days', 'Domestic', 'Small'),
-    (2, 9.99, 'Express Shipping', '1-2 business days', 'Domestic', 'Small'),
-    (3, 14.99, 'International Shipping', '7-14 business days', 'International', 'Small'),
-    (4, 8.99, 'Standard Shipping', '3-5 business days', 'Domestic', 'Large'),
-    (5, 12.99, 'Express Shipping', '1-2 business days', 'Domestic', 'Large'),
-    (6, 19.99, 'International Shipping', '7-14 business days', 'International', 'Large');
+    (1, 5.99, 'Standard Shipping', '3-5 business days', 'Small'),
+    (2, 9.99, 'Express Shipping', '1-2 business days', 'Small'),
+    (3, 14.99, 'International Shipping', '7-14 business days', 'Small'),
+    (4, 8.99, 'Standard Shipping', '3-5 business days', 'Large'),
+    (5, 12.99, 'Express Shipping', '1-2 business days', 'Large'),
+    (6, 19.99, 'International Shipping', '7-14 business days', 'Large');
 
 -- Queries
 

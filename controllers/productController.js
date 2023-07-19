@@ -18,10 +18,19 @@ export const getProducts = async (req, res) => {
     }
 }
 
+export const getPaymentIntent = async(req,res) => { 
+  try { 
+      console.log('jjj')
+  }catch(error){
+    console.log(error)
+  }
+}
+
 //create a product--"optimize" check if product exists then create one
 export const createProduct = async (req, res) => {
     try {
-      const { name, description, price, quantity } = req.body;
+      const { name, description, price, quantity, category } = req.body;
+      console.log(req.body)
      
       const imagePath = `/public/uploads/${req.file.filename}`;
   
@@ -30,11 +39,13 @@ export const createProduct = async (req, res) => {
         .request()
         .input('name', sql.VarChar, name)
         .input('description', sql.VarChar, description)
-        .input('price', sql.Float, price)
+        .input('price', sql.Float, price)   
         .input('quantity', sql.Int, quantity)
         .input('imagePath', sql.VarChar, imagePath)
+        .input('category',sql.VarChar,category)
+       
         .query(
-          'INSERT INTO Products (name, description, price, quantity, image_path) VALUES (@name, @description, @price, @quantity, @imagePath)'
+          'INSERT INTO Products (name, description, price, quantity,image_path, category) VALUES (@name, @description, @price,@quantity,@imagePath,@category )'
         );
         
   

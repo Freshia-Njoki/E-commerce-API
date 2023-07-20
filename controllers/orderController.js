@@ -30,9 +30,10 @@ export const revenue = async (req, res) => {
     try {
       let pool = await sql.connect(config.sql);
       const query = `
-      SELECT SUM(p.price * p.quantity) - SUM(o.total_amount) AS total_savings
-FROM Products p
-LEFT JOIN Orders o ON p.id = o.id
+      SELECT SUM(p.price * oi.quantity) - SUM(o.total_amount) AS total_savings
+FROM OrderItems oi
+JOIN Products p ON oi.product_id = p.id
+JOIN Orders o ON oi.order_id = o.id
 WHERE o.status = 'completed';
       
       `;

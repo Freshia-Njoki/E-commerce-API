@@ -48,9 +48,10 @@ const routes = (app) => {
     .get( getProducts)
     .post(upload.single('image') ,createProduct);
     app.route('/products/:id')
-    .get(LoginRequired, getProduct)
-    .delete(LoginRequired, deleteProduct)
-    .put(LoginRequired, updateProduct);
+    //protect with LoginRequired
+    .get( getProduct)
+    .delete( deleteProduct)
+    .put(updateProduct);
 
   
 

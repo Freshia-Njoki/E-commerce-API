@@ -10,6 +10,18 @@ CREATE TABLE Users
     created_at DATETIME DEFAULT GETDATE()
 );
 
+CREATE TABLE Products
+(
+    id INT PRIMARY KEY IDENTITY(1,1),
+    name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    price DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    created_at DATETIME,
+    image_path VARCHAR(255),
+    category VARCHAR(255)
+);
+
 
 
 CREATE TABLE Orders
@@ -63,13 +75,13 @@ VALUES
     ('DavidBrown', 'david.brown@example.com', 'password5');
 
 INSERT INTO Products
-    (name, description, price, quantity)
+    (id, name, description, price, quantity, created_at, image_path, category)
 VALUES
-    ('Product 1', 'Description 1', 10.99, 100),
-    ('Product 2', 'Description 2', 19.99, 50),
-    ('Product 3', 'Description 3', 5.99, 200),
-    ('Product 4', 'Description 4', 7.99, 150),
-    ('Product 5', 'Description 5', 12.99, 75);
+    (1, 'Product A', 'This is product A description.', 19.99, 100, '2023-07-20 12:00:00', '/public/uploads/image-1.jpg', 'Category A'),
+    (2, 'Product B', 'Product B is an amazing item.', 24.50, 50, '2023-07-20 13:30:00', '/public/uploads/image-2.jpg', 'Category B'),
+    (3, 'Product C', 'Product C description goes here.', 15.75, 75, '2023-07-20 14:45:00', '/public/uploads/image-3.jpg', 'Category A'),
+    (4, 'Product D', 'This is product D description.', 9.99, 200, '2023-07-20 16:15:00', '/public/uploads/image-4.jpg', 'Category C'),
+    (5, 'Product E', 'Product E is a fantastic choice.', 34.99, 30, '2023-07-20 18:00:00', '/public/uploads/image-5.jpg', 'Category B');
 
 INSERT INTO Orders
     (user_id, total_amount, status)
@@ -78,14 +90,19 @@ VALUES
     (2, 75.99, 'pending'),
     (3, 30.99, 'completed'),
     (4, 20.99, 'cancelled'),
-    (5, 40.99, 'completed');
+    (5, 40.99, 'completed'),
+    (8, 30.99, 'completed'),
+    (9, 20.99, 'cancelled'),
+    (10, 40.99, 'pending');
 
 INSERT INTO OrderItems
     (order_id, product_id, quantity, price)
 VALUES
     (1, 1, 2, 10.99),
     (1, 5, 3, 15.99),
-    (2, 6, 1, 5.99);
+    (2, 6, 1, 5.99),
+    (5, 28, 15, 12.50),
+    (7, 29, 20, 29.75);
 
 INSERT INTO Admin
     (admin_name, phone_no, email, password)
@@ -150,9 +167,10 @@ WHERE status = 'completed';
 
 
 --total savings
-SELECT SUM(p.price * p.quantity) - SUM(o.total_amount) AS total_savings
-FROM Products p
-    LEFT JOIN Orders o ON p.id = o.id
+SELECT SUM(p.price * oi.quantity) - SUM(o.total_amount) AS total_savings
+FROM OrderItems oi
+    JOIN Products p ON oi.product_id = p.id
+    JOIN Orders o ON oi.order_id = o.id
 WHERE o.status = 'completed';
 
 

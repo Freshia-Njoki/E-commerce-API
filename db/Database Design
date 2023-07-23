@@ -75,13 +75,13 @@ VALUES
     ('DavidBrown', 'david.brown@example.com', 'password5');
 
 INSERT INTO Products
-    (id, name, description, price, quantity, created_at, image_path, category)
+    (name, description, price, quantity, created_at, image_path, category)
 VALUES
-    (1, 'Product A', 'This is product A description.', 19.99, 100, '2023-07-20 12:00:00', '/public/uploads/image-1.jpg', 'Category A'),
-    (2, 'Product B', 'Product B is an amazing item.', 24.50, 50, '2023-07-20 13:30:00', '/public/uploads/image-2.jpg', 'Category B'),
-    (3, 'Product C', 'Product C description goes here.', 15.75, 75, '2023-07-20 14:45:00', '/public/uploads/image-3.jpg', 'Category A'),
-    (4, 'Product D', 'This is product D description.', 9.99, 200, '2023-07-20 16:15:00', '/public/uploads/image-4.jpg', 'Category C'),
-    (5, 'Product E', 'Product E is a fantastic choice.', 34.99, 30, '2023-07-20 18:00:00', '/public/uploads/image-5.jpg', 'Category B');
+    ('Product A', 'This is product A description.', 19.99, 100, '2023-07-20 12:00:00', '/public/uploads/image-1.jpg', 'Category A'),
+    ('Product B', 'Product B is an amazing item.', 24.50, 50, '2023-07-20 13:30:00', '/public/uploads/image-2.jpg', 'Category B'),
+    ('Product C', 'Product C description goes here.', 15.75, 75, '2023-07-20 14:45:00', '/public/uploads/image-3.jpg', 'Category A'),
+    ('Product D', 'This is product D description.', 9.99, 200, '2023-07-20 16:15:00', '/public/uploads/image-4.jpg', 'Category C'),
+    ('Product E', 'Product E is a fantastic choice.', 34.99, 30, '2023-07-20 18:00:00', '/public/uploads/image-5.jpg', 'Category B');
 
 INSERT INTO Orders
     (user_id, total_amount, status)

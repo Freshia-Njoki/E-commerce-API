@@ -7,6 +7,7 @@ import path from 'path'
 import { fileURLToPath } from 'url';
 import {resolve} from 'path'
 import stripe  from 'stripe';
+import bodyParser from 'body-parser';
 
 
 // Get the directory path of the current module
@@ -19,6 +20,7 @@ const app = express();
 app.use(express.json());//middleware for accepting data from the frontend
 app.use(express.urlencoded({ extended: true}));
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true}));
 app.use('/public',express.static('public'))
 
 
@@ -96,6 +98,6 @@ app.get("/", (req, res) => {
     res.send("welcome to my E-commerce API")
 });
 
-app.listen(config.port, () => {
-    console.log(`server is running at ${config.url}`)
+app.listen(config.port || 5000, () => {
+    console.log("server is running ");
 });

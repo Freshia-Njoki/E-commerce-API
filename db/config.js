@@ -3,18 +3,12 @@ import assert from 'assert'//validates if a condition is true-boolean
 
 dotenv.config();
 
-const { PORT, HOST, HOST_URL, SQL_USER, SQL_PWD, SQL_DB, SQL_SERVER, JWT_SECRET } = process.env;
-
-const sqlEncrypt = process.env.SQL_ENCRYPTED === 'true';
+const { PORT, SQL_USER, SQL_PWD, SQL_DB, SQL_SERVER, JWT_SECRET } = process.env;
 
 assert(PORT, 'PORT is required');
-assert(HOST, 'HOST is required');
-
  const config = {
     //for express
     port: PORT,
-    host: HOST,
-    url: HOST_URL,
     //for server
     sql: {
         server: SQL_SERVER,
@@ -22,8 +16,8 @@ assert(HOST, 'HOST is required');
         user: SQL_USER,
         password: SQL_PWD,
         options:{
-            encrypt: sqlEncrypt,
-            enableArithAbort: true
+            encrypt: true,
+            enableArithAbort: false
         }
     }, 
     jwt_secret: JWT_SECRET

@@ -19,7 +19,7 @@ export const revenue = async (req, res) => {
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'An error occurred while retrieving the revenue made' });
+      res.status(500).json({ error: 'An error occurred while retrieving the revenue' });
     } finally {
       sql.close();
     }
@@ -45,7 +45,7 @@ WHERE o.status = 'completed';
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'An error occurred while retrieving the savings made' });
+      res.status(500).json({ error: 'An error occurred while retrieving the savings' });
     } finally {
       sql.close();
     }

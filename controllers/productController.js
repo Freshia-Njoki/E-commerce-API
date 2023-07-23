@@ -20,7 +20,7 @@ export const getProducts = async (req, res) => {
 
 export const getPaymentIntent = async(req,res) => { 
   try { 
-      console.log('jjj')
+      console.log('Payment')
   }catch(error){
     console.log(error)
   }
@@ -53,7 +53,7 @@ export const createProduct = async (req, res) => {
 
   // Send the image URL along with other product data as a response
   res.json({
-    message: 'Product successfully created',
+    message: 'Product created successfully',
     
   });
     } catch (error) {

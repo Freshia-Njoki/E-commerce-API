@@ -7,12 +7,6 @@
   "engines": {
     "node": ">=18.16.0"
   },
-  "scripts": {
-    "start": "nide server.js",
-    "dev": "nodemon server.js"
-  },
-  "author": "Freshia Njoki",
-  "license": "ISC",
   "dependencies": {
     "@stripe/stripe-js": "^1.54.1",
     "bcrypt": "^5.1.0",
@@ -24,5 +18,10 @@
     "mssql": "^9.1.1",
     "multer": "^1.4.5-lts.1",
     "stripe": "^12.13.0"
-  }
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Freshia Njoki",
+  "license": "ISC"
 }

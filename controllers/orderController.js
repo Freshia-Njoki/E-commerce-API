@@ -115,6 +115,46 @@ export const updateOrder = async (req, res) => {
     }
 };
 
+//get an order with specific status
+export const getOrderWithStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    let pool = await sql.connect(config.sql);
+    const result = await pool
+      .request()
+      .input("status", sql.VarChar, status)
+      .query("SELECT * FROM Orders WHERE status = @status");
+
+    // Check if there's a matching order with the specified status
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: 'No order found with the specified status' });
+    }
+
+    // Send the order in the response
+    res.status(200).json(result.recordset);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'An error occurred while retrieving the order' });
+  } finally {
+    sql.close();
+  }
+};
+
+//get total items
+export const getTotalOrdersCount = async (req, res) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const result = await pool.request().query("SELECT COUNT(*) AS totalOrdersCount FROM Orders");
+        const totalOrdersCount = result.recordset[0].totalOrdersCount;
+        res.status(200).json({ totalOrdersCount });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while retrieving the total number of orders' });
+    } finally {
+        sql.close();
+    }
+};
+
+
 //Delete a order
 export const deleteOrder = async (req, res) => {
     try {
@@ -128,3 +168,5 @@ export const deleteOrder = async (req, res) => {
         sql.close();
     }
 };
+
+

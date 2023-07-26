@@ -43,7 +43,8 @@ export const createOrderItem = async (req, res) => {
             .query("INSERT INTO OrderItems (order_id, product_id, quantity, price) values (@order_id, @product_id, @quantity, @price)");
         res.status(200).json({ message: 'OrderItem created successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'An error occurred while creating an order Item' });
+        console.log(error);
+        // res.status(500).json({ error: 'An error occurred while creating an order Item' });
     } finally {
         sql.close(); 
     }

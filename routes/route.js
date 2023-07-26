@@ -1,6 +1,6 @@
 //re-routes the response
 import { createProduct, deleteProduct, getProduct, getProducts, updateProduct, getPaymentIntent } from "../controllers/productController.js";
-import { createOrder, deleteOrder, getOrder, getOrders, updateOrder, revenue, savings } from "../controllers/orderController.js";
+import { createOrder, deleteOrder, getOrder, getOrders, updateOrder, revenue, savings, getOrderWithStatus, getTotalOrdersCount  } from "../controllers/orderController.js";
 import { createOrderItem, deleteOrderItem, getOrderItem, getOrderItems, updateOrderItem } from "../controllers/orderItemsController.js";
 import { register, login, loginRequired } from "../controllers/userController.js";
 import { admin_register, admin_login, LoginRequired } from "../controllers/adminController.js";
@@ -53,17 +53,19 @@ const routes = (app) => {
     .delete( deleteProduct)
     .put(updateProduct);
 
-  
-
     app.route('/orders')
-    .get(loginRequired, getOrders)
-    .post(loginRequired, createOrder)
+    .get(getOrders)
+    .post(LoginRequired, createOrder)
 
     app.route('/orders/:id')
+    .get(LoginRequired, getOrder)
+    .delete(LoginRequired, deleteOrder)
+    .put(LoginRequired, updateOrder);
+
+   app.route('/orders/status')
+    .post(getOrderWithStatus);
     
-    .get(loginRequired, getOrder)
-    .delete(loginRequired, deleteOrder)
-    .put(loginRequired, updateOrder);
+    app.get('/totalOrdersCount', getTotalOrdersCount);
 
     app.route('/order')
     .get(getOrderItems)

@@ -98,6 +98,6 @@ app.get("/", (req, res) => {
     res.send("welcome to my E-commerce API")
 });
 
-app.listen(config.port || 5000, () => {
-    console.log("server is running ");
+app.listen(config.port, () => {
+    console.log(`server is running on ${config.url}`);
 });
